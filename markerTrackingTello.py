@@ -23,7 +23,7 @@ try:
         ## Step 1
         img = telloGetFrame(myDrone, w, h)
         ## Step 2
-        img, info = findMarker(img)
+        img = findMarker(img)
         # data.append([myDrone.get_battery(), myDrone.get_height(), myDrone.get_speed_x(), myDrone.get_speed_y(),
         #              myDrone.get_speed_z(), myDrone.get_temperature(), myDrone.get_barometer(), info[1]])
 

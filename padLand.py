@@ -17,6 +17,7 @@ if pid == 1:
 else:
     print("none")
 myDrone.go_xyz_speed_mid(100, 20, 0, 20, 1)
+#myDrone.go_xyz_speed(100, 20, 0, 20)
 print("moved")
 myDrone.go_xyz_speed(-100, -20, 0, 20)
 pid = myDrone.get_mission_pad_id()
