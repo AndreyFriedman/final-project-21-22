@@ -7,9 +7,10 @@ fbRange = [5000,6000]
 w,h = 360, 240
 pid = [0.4, 0.4, 0]
 pError = 0
-startCounter = 1  # for no Flight 1   - for flight 0
+startCounter = 0  # for no Flight 1   - for flight 0
 
 myDrone = initializeTello()
+print(myDrone.get_battery())
 data=[]
 try:
     while True:
@@ -23,7 +24,13 @@ try:
         ## Step 1
         img = telloGetFrame(myDrone, w, h)
         ## Step 2
-        img = findMarker(img)
+        img, centers, cordinates = findMarker(img)
+        if len(centers)>0:
+            pError = trackMarker(myDrone, centers[0][0], w,  pid, pError)
+        else:
+            myDrone.yaw_velocity = 0
+        #if len(centers)>0:
+            #print(centers[0][0])
         # data.append([myDrone.get_battery(), myDrone.get_height(), myDrone.get_speed_x(), myDrone.get_speed_y(),
         #              myDrone.get_speed_z(), myDrone.get_temperature(), myDrone.get_barometer(), info[1]])
 

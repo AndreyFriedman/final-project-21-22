@@ -8,6 +8,9 @@ import sys
 from djitellopy import Tello
 import numpy as np
 
+w,h = 360, 240
+pid = [0.4, 0.4, 0]
+pError = 0
 
 def initializeTello():
     myDrone = Tello()
@@ -94,7 +97,8 @@ def findMarker(img):
     # detect ArUco markers in the input frame
     (corners, ids, rejected) = cv2.aruco.detectMarkers(frame, arucoDict, parameters=arucoParams)
 
-
+    centers=[]
+    cordinates=[]
     # verify *at least* one ArUco marker was detected
     if len(corners) > 0:
 
@@ -108,6 +112,7 @@ def findMarker(img):
             # order)
             corners = markerCorner.reshape((4, 2))
             (topLeft, topRight, bottomRight, bottomLeft) = corners
+
 
             # convert each of the (x, y)-coordinate pairs to integers
             topRight = (int(topRight[0]), int(topRight[1]))
@@ -126,10 +131,13 @@ def findMarker(img):
             cY = int((topLeft[1] + bottomRight[1]) / 2.0)
             cv2.circle(frame, (cX, cY), 4, (0, 0, 255), -1)
 
+            #saving markers info in center and cordi
+            cordinates.append([topLeft, topRight, bottomRight, bottomLeft])
+            centers.append([cX, cY])
+
             # draw the ArUco marker ID on the frame
             cv2.putText(frame, str(markerID),
                         (topLeft[0], topLeft[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
 
         # show the output frame
         #cv2.imshow("Frame", frame)
@@ -138,7 +146,26 @@ def findMarker(img):
         #if key == ord("q"):
             #break
 
-    return frame
+    return frame, centers, cordinates
     # do a bit of cleanup
     #cv2.destroyAllWindows()
     #vs.stop()
+
+
+
+
+def trackMarker(myDrone, cX, w ,pid, pError):
+    error = cX-w // 2
+    speed = pid[0] * error + pid[1] * (error - pError)
+    speed = int(np.clip(speed, -100, 100))
+    if cX != 0:
+        myDrone.yaw_velocity = speed
+    else:
+        myDrone.yaw_velocity = 0
+
+    if myDrone.send_rc_control:
+         myDrone.send_rc_control(myDrone.left_right_velocity,
+                                 myDrone.for_back_velocity,
+                                 myDrone.up_down_velocity,
+                                 myDrone.yaw_velocity)
+    return error
