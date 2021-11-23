@@ -1,4 +1,4 @@
-from utlis import *
+from videoMarkersTracking import *
 import cv2
 import pandas as pd
 import keyboard
@@ -17,16 +17,15 @@ try:
         ## Flight
         if startCounter == 0:
              myDrone.takeoff()
-             #myDrone.move_up(20)
+             myDrone.move_up(20)
              startCounter = 1
 
         ## Step 1
         img = telloGetFrame(myDrone, w, h)
         ## Step 2
-        img, info = findFace(img)
+        img, info = findMarker(img)
         # data.append([myDrone.get_battery(), myDrone.get_height(), myDrone.get_speed_x(), myDrone.get_speed_y(),
         #              myDrone.get_speed_z(), myDrone.get_temperature(), myDrone.get_barometer(), info[1]])
-        # pError = trackFace(myDrone, info, w, h, pid, pError, fbRange)
 
         cv2.imshow('Image', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -34,6 +33,6 @@ try:
             break
 
 except KeyboardInterrupt:
-#     df = pd.DataFrame(data, columns= ['battary', 'height', 'speed_x', 'speed_y', 'speed_z', 'avg_temperature', 'barometer', 'area'])
-#     df.to_csv('flight_data.csv', index = False)
+    # df = pd.DataFrame(data, columns= ['battary', 'height', 'speed_x', 'speed_y', 'speed_z', 'avg_temperature', 'barometer', 'area'])
+    # df.to_csv('markers_flight_data.csv', index = False)
     pass
