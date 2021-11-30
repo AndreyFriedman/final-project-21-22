@@ -35,7 +35,7 @@ def findMarker(img):
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-t", "--type", type=str,
-        default="DICT_ARUCO_ORIGINAL",
+        default="DICT_4X4_50",
         help="type of ArUCo tag to detect")
     args = vars(ap.parse_args())
 
