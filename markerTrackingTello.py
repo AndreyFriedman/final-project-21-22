@@ -3,11 +3,13 @@ import cv2
 import pandas as pd
 import keyboard
 
-fbRange = [5000,6000]
 w,h = 360, 240
-pid = [0.4, 0.4, 0]
+pid = [0.6, 0.45, 0]
+pid2 = [0.3,0.2]
 pError = 0
-startCounter = 1  # for no Flight 1   - for flight 0
+pErrorfb = 0
+pErrorh = 0
+startCounter = 0  # for no Flight 1   - for flight 0
 
 myDrone = initializeTello()
 print(myDrone.get_battery())
@@ -18,17 +20,16 @@ try:
         ## Flight
         if startCounter == 0:
              myDrone.takeoff()
-             myDrone.move_up(20)
              startCounter = 1
 
         ## Step 1
         img = telloGetFrame(myDrone, w, h)
         ## Step 2
-        img, centers, cordinates = findMarker(img)
+        img, centers, cordinates, areas = findMarker(img)
         if len(centers)>0:
-            pError = trackMarker(myDrone, centers[0][0], w,  pid, pError)
+            pError,pErrorfb, pErrorh = trackMarker(myDrone, centers[0][0],centers[0][1],areas[0], w, h,  pid, pError,pErrorfb,pErrorh)
         else:
-            myDrone.yaw_velocity = 0
+            pError,pErrorfb, pErrorh = trackMarker(myDrone, 0, 0, 0, w, h,  pid, pError,pErrorfb, pErrorh)
         #if len(centers)>0:
             #print(centers[0][0])
         # data.append([myDrone.get_battery(), myDrone.get_height(), myDrone.get_speed_x(), myDrone.get_speed_y(),

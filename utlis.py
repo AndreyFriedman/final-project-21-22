@@ -74,11 +74,11 @@ def trackFace(myDrone, info, w, h, pid, pError, fbRange):
     #up and down
     if(y != 0):
         print(y)
-    if y > h-10 and y < h+10:
+    if y > h//2-10 and y < h//2+10:
         myDrone.up_down_velocity = 0
-    elif y > h+10:
+    elif y > h//2+10:
         myDrone.up_down_velocity = -20
-    elif y < h-10 and y != 0:
+    elif y < h//2-10 and y != 0:
         myDrone.up_down_velocity = 20
     else:
         myDrone.up_down_velocity=0
