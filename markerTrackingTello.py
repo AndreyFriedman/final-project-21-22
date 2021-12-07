@@ -1,4 +1,4 @@
-from videoMarkersTracking import *
+from utils2 import *
 import cv2
 import pandas as pd
 import keyboard
@@ -9,7 +9,7 @@ pid2 = [0.3,0.2]
 pError = 0
 pErrorfb = 0
 pErrorh = 0
-startCounter = 0  # for no Flight 1   - for flight 0
+startCounter = 1  # for no Flight 1   - for flight 0
 
 myDrone = initializeTello()
 print(myDrone.get_battery())
@@ -25,11 +25,11 @@ while True:
     ## Step 1
     img = telloGetFrame(myDrone, w, h)
     ## Step 2
-    img, centers, cordinates, areas = findMarker(img)
-    if len(centers)>0:
-        pError,pErrorfb, pErrorh = trackMarker(myDrone, centers[0][0],centers[0][1],areas[0], w, h, pError,pErrorfb,pErrorh)
-    else:
-        pError,pErrorfb, pErrorh = trackMarker(myDrone, 0, 0, 0, w, h, pError,pErrorfb, pErrorh)
+    img, centers, cordinates, areas = findMarker(img,3,"DICT_ARUCO_ORIGINAL")
+    # if len(centers)>0:
+    #     pError,pErrorfb = trackMarker(myDrone, centers[0][0],centers[0][1],areas[0], w, h, pError,pErrorfb)
+    # else:
+    #     pError,pErrorfb= trackMarker(myDrone, 0, 0, 0, w, h, pError,pErrorfb)
     #if len(centers)>0:
         #print(centers[0][0])
     # data.append([myDrone.get_battery(), myDrone.get_height(), myDrone.get_speed_x(), myDrone.get_speed_y(),

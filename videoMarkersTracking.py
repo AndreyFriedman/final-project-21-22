@@ -146,10 +146,9 @@ def findMarker(img):
 
 
 
-def trackMarker(myDrone, cX,cY, area, w, h , pError, pErrorfb, pErrorh):
+def trackMarker(myDrone, cX,cY, area, w, h , pError, pErrorfb):
     error=0
     errorfb=0
-    errorh=0
     if cX != 0:
         error = cX-(w // 2)
         speed = pid[0] * error + pid[1] * (error - pError)
@@ -160,23 +159,23 @@ def trackMarker(myDrone, cX,cY, area, w, h , pError, pErrorfb, pErrorh):
         myDrone.yaw_velocity = 0
 
     # up and down
-    if cY != 0:
-        if cY<((h // 2)+20):
-            myDrone.up_down_velocity=8
-        elif cY<((h // 2)-20):
-            myDrone.up_down_velocity=-8
-    else:
-        myDrone.up_down_velocity = 0
-
-
-    # if cY > h//2 - 10 and cY < h//2 + 10:
-    #     myDrone.up_down_velocity = 0
-    # elif cY > h//2 + 10:
-    #     myDrone.up_down_velocity = -20
-    # elif cY < h//2 - 10 and cY != 0:
-    #     myDrone.up_down_velocity = 20
+    # if cY != 0:
+    #     if cY<((h // 2)+20):
+    #         myDrone.up_down_velocity=8
+    #     elif cY<((h // 2)-20):
+    #         myDrone.up_down_velocity=-8
     # else:
     #     myDrone.up_down_velocity = 0
+
+
+    if cY < h//2 + 10 and cY > h//2 - 10:
+        myDrone.up_down_velocity = 0
+    elif cY > h//2 + 10:
+        myDrone.up_down_velocity = 10
+    elif cY < h//2 - 10 and cY != 0:
+        myDrone.up_down_velocity = -10
+    else:
+        myDrone.up_down_velocity = 0
 
     # forward and backward
     if area!=0:
@@ -207,4 +206,4 @@ def trackMarker(myDrone, cX,cY, area, w, h , pError, pErrorfb, pErrorh):
                                  myDrone.for_back_velocity,
                                  myDrone.up_down_velocity,
                                  myDrone.yaw_velocity)
-    return error, errorfb, errorh
+    return error, errorfb
