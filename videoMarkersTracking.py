@@ -162,9 +162,9 @@ def trackMarker(myDrone, cX,cY, area, w, h , pError, pErrorfb, pErrorh):
     # up and down
     if cY != 0:
         if cY<((h // 2)+20):
-            myDrone.up_down_velocity=15
+            myDrone.up_down_velocity=8
         elif cY<((h // 2)-20):
-            myDrone.up_down_velocity=-15
+            myDrone.up_down_velocity=-8
     else:
         myDrone.up_down_velocity = 0
 
