@@ -146,7 +146,7 @@ def findMarker(img):
 
 
 
-def trackMarker(myDrone, cX,cY, area, w, h ,pid, pError, pErrorfb, pErrorh):
+def trackMarker(myDrone, cX,cY, area, w, h , pError, pErrorfb, pErrorh):
     error=0
     errorfb=0
     errorh=0
@@ -160,13 +160,11 @@ def trackMarker(myDrone, cX,cY, area, w, h ,pid, pError, pErrorfb, pErrorh):
         myDrone.yaw_velocity = 0
 
     # up and down
-
     if cY != 0:
-        errorh = cY-(h // 2)
-        speedh = pid2[0] * error + pid2[1] * (errorh - pErrorh)
-        speedh = int(np.clip(speedh, -15, 15))
-        myDrone.up_down_velocity = speedh
-
+        if cY<((h // 2)+20):
+            myDrone.up_down_velocity=15
+        elif cY<((h // 2)-20):
+            myDrone.up_down_velocity=-15
     else:
         myDrone.up_down_velocity = 0
 
