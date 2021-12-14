@@ -11,8 +11,8 @@ pid = [0.4, 0.4, 0]
 pid2 = [0.3,0.2]
 
 pError = 0
-fbRange = [1000,1100]
-areaF=1000
+fbRange = [1100,1400]
+
 
 def initializeTello():
     myDrone = Tello()
@@ -136,6 +136,46 @@ def findMarker(img,givenId:int,type:str):#id example: "DICT_ARUCO_ORIGINAL"
     #cv2.destroyAllWindows()
     #vs.stop()
 
+
+def trackMarker(myDrone, x,y , area,w, h, pError):
+
+    error = x-w // 2
+    speed = pid[0] * error + pid[1] * (error - pError)
+    speed = int(np.clip(speed, -100, 100))
+
+    #forward and backward
+    if area > fbRange[0] and area < fbRange[1]:
+        myDrone.for_back_velocity = 0
+    elif area > fbRange[1]:
+        myDrone.for_back_velocity = -20
+    elif area < fbRange[0] and area != 0:
+        myDrone.for_back_velocity = 20
+    else:
+        myDrone.for_back_velocity = 0
+
+    #up and down
+    if(y != 0):
+        print(y)
+    if y > h//2-10 and y < h//2+10:
+        myDrone.up_down_velocity = 0
+    elif y > h//2+10:
+        myDrone.up_down_velocity = -20
+    elif y < h//2-10 and y != 0:
+        myDrone.up_down_velocity = 20
+    else:
+        myDrone.up_down_velocity=0
+
+    if x != 0:
+        myDrone.yaw_velocity = speed
+    else:
+        myDrone.yaw_velocity = 0
+
+    if myDrone.send_rc_control:
+         myDrone.send_rc_control(myDrone.left_right_velocity,
+                                 myDrone.for_back_velocity,
+                                 myDrone.up_down_velocity,
+                                 myDrone.yaw_velocity)
+    return error
 
 
 #

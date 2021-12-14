@@ -13,7 +13,7 @@ pid = [0.4, 0.4, 0]
 pid2 = [0.3,0.2]
 
 pError = 0
-fbRange = [1000,1100]
+fbRange = [1100,1500]
 areaF=1000
 
 def initializeTello():
