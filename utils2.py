@@ -17,7 +17,7 @@ up = 0
 down = 0
 
 pError = 0
-fbRange = [2500, 6500]
+fbRange = [2500, 6500]  # about [60, 130] cm
 
 
 def initializeTello():
@@ -181,17 +181,31 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
     speed = int(np.clip(speed, -100, 100))
 
     # forward and backward
-    if area > fbRange[0] and area < fbRange[1]:
+    if fbRange[0] < area < fbRange[1]:
         myDrone.for_back_velocity = 0
+        print(area)
         # flag = change_flag_true()
     elif area > fbRange[1]:
-        myDrone.for_back_velocity = -20
+        # dynamic_spd = -1 * int(((area - fbRange[1]) / (10000-fbRange[1])) * 100)
+        dynamic_spd = -1 * int(math.pow((area - fbRange[1]) / (10000-fbRange[1]), 2))
+        print("need to go back, area is:", area)
+        print("dynamic speed is:", dynamic_spd)
+        if dynamic_spd < -40:
+            dynamic_spd = -40
+        myDrone.for_back_velocity = dynamic_spd
         flag = False
-        print("flag changed in line 187")
+        # print("flag changed in line 187")
     elif area < fbRange[0] and area != 0:
-        myDrone.for_back_velocity = 20
+        # dynamic_spd = int(math.pow((fbRange[0]- area)/(fbRange[0]/10), 2))
+        dynamic_spd = int(math.pow((fbRange[0] - area)/(fbRange[0]/6.3095), 2.5))
+        if dynamic_spd > 100:
+            dynamic_spd = 100
+        myDrone.for_back_velocity = dynamic_spd
+        # print("area:", area)
+        # print("dynamic speed:", dynamic_spd)
+        # print("current speed:", myDrone.get_speed_x())
         flag = False
-        print("flag changed in line 191")
+        # print("flag changed in line 191")
     else:
         myDrone.for_back_velocity = 0
         # flag = change_flag_true()
@@ -203,28 +217,28 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
     elif y > h // 2 + 10:
         myDrone.up_down_velocity = -20
         flag = False
-        print("flag changed in line 203")
+        # print("flag changed in line 203")
     elif y < h // 2 - 10 and y != 0:
         myDrone.up_down_velocity = 20
         flag = False
-        print("flag changed in line 207")
+        # print("flag changed in line 207")
     else:
         myDrone.up_down_velocity = 0
         # flag = change_flag_true()
 
     # right left curved
     if left - right > 4:
-        print("need to move right")
+        # print("need to move right")
         # myDrone.move_right(2*(left-right))
         myDrone.left_right_velocity = 10
         flag = False
-        print("flag changed in line 216")
+        # print("flag changed in line 216")
     elif right - left > 4:
-        print("need to move left")
+        # print("need to move left")
         # myDrone.move_left(2 * (left - right))
         myDrone.left_right_velocity = -10
         flag = False
-        print("flag changed in line 222")
+        # print("flag changed in line 222")
     else:
         myDrone.left_right_velocity = 0
         # change_flag_true()

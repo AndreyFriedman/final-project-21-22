@@ -31,9 +31,9 @@ while True:
     # Step 2
     img, centers, cordinates, areas = findMarker(img, 33, "DICT_ARUCO_ORIGINAL")
     if len(centers) > 0:
-         pError = trackMarker(myDrone, centers[0][0], centers[0][1], areas[0], w, h, pError)
+        pError = trackMarker(myDrone, centers[0][0], centers[0][1], areas[0], w, h, pError)
     else:
-         pError= trackMarker(myDrone, 0, 0, 0, w, h, pError)
+        pError = trackMarker(myDrone, 0, 0, 0, w, h, pError)
 
     # if len(centers) > 0:
         # print(centers[0][0])
@@ -43,6 +43,7 @@ while True:
     cv2.imshow('Image', img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         myDrone.land()
+        print(myDrone.get_battery())
         break
 
 # except KeyboardInterrupt:
