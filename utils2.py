@@ -17,7 +17,9 @@ up = 0
 down = 0
 
 pError = 0
-fbRange = [2500, 6500]  # about [60, 130] cm
+fbRange = [4000, 6500]  # about [60, 130] cm
+edge_dist = [4, 8]
+left_right_curved = [2, 4]
 
 
 def initializeTello():
@@ -168,13 +170,8 @@ def findMarker(img, givenId: int, type: str):  # id example: "DICT_ARUCO_ORIGINA
 
 def trackMarker(myDrone, x, y, area, w, h, pError):
     print("-----new loop-----")
+    print("are is:", area)
     flag = True
-
-    # #inside func
-    # def change_flag_true() -> bool:
-    #     if flag == false:
-    #         return
-    #     flag = true
 
     error = x - w // 2
     speed = pid[0] * error + pid[1] * (error - pError)
@@ -184,7 +181,6 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
     if fbRange[0] < area < fbRange[1]:
         myDrone.for_back_velocity = 0
         print(area)
-        # flag = change_flag_true()
     elif area > fbRange[1]:
         # dynamic_spd = -1 * int(((area - fbRange[1]) / (10000-fbRange[1])) * 100)
         dynamic_spd = -1 * int(math.pow((area - fbRange[1]) / (10000-fbRange[1]), 2))
@@ -192,6 +188,8 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
         print("dynamic speed is:", dynamic_spd)
         if dynamic_spd < -40:
             dynamic_spd = -40
+        if dynamic_spd > -20:
+            dynamic_spd = -20
         myDrone.for_back_velocity = dynamic_spd
         flag = False
         # print("flag changed in line 187")
@@ -201,19 +199,14 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
         if dynamic_spd > 100:
             dynamic_spd = 100
         myDrone.for_back_velocity = dynamic_spd
-        # print("area:", area)
-        # print("dynamic speed:", dynamic_spd)
-        # print("current speed:", myDrone.get_speed_x())
         flag = False
         # print("flag changed in line 191")
     else:
         myDrone.for_back_velocity = 0
-        # flag = change_flag_true()
 
     # up and down
     if y > h // 2 - 10 and y < h // 2 + 10:
         myDrone.up_down_velocity = 0
-        # flag = change_flag_true()
     elif y > h // 2 + 10:
         myDrone.up_down_velocity = -20
         flag = False
@@ -227,7 +220,7 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
         # flag = change_flag_true()
 
     # right left curved
-    if left - right > 4:
+    if left - right > 4:  # TODO needs to change it to left right curved (just like sedge_dist)
         # print("need to move right")
         # myDrone.move_right(2*(left-right))
         myDrone.left_right_velocity = 10
@@ -241,7 +234,6 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
         # print("flag changed in line 222")
     else:
         myDrone.left_right_velocity = 0
-        # change_flag_true()
 
     # spin
     if x != 0:
@@ -259,12 +251,21 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
 
     # up down curved
     print("down-up = ", (down-up))
-    if down - up > 8:
-        print("need to land")
-        if flag is True:
-            print("landing")
-            myDrone.land()
-        else:
-            print("cant land")
+    if fbRange[0] < area < ((fbRange[1] - fbRange[0])/2) + fbRange[0]:
+        if down - up > edge_dist[0]:
+            print("need to land")
+            if flag is True:
+                print("landing")
+                myDrone.land()
+            else:
+                print("cant land")
+    else:
+        if down - up > edge_dist[1]:
+            print("need to land")
+            if flag is True:
+                print("landing")
+                myDrone.land()
+            else:
+                print("cant land")
 
     return error
