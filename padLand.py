@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
         myDrone.go_xyz_speed_mid(-25, -25, 70, 30, pid)
         time.sleep(2)
-
+        # bap
         # dist_x = myDrone.get_mission_pad_distance_x()
         # dist_y = myDrone.get_mission_pad_distance_y()
         # dist_z = myDrone.get_mission_pad_distance_z()
