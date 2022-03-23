@@ -172,6 +172,7 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
     print("-----new loop-----")
     print("are is:", area)
     flag = True
+    keepRecording = True
 
     error = x - w // 2
     speed = pid[0] * error + pid[1] * (error - pError)
@@ -220,7 +221,7 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
         # flag = change_flag_true()
 
     # right left curved
-    if left - right > 4:  # TODO needs to change it to left right curved (just like sedge_dist)
+    if left - right > 4:  # TODO needs to change it to left right curved (just like edge_dist)
         # print("need to move right")
         # myDrone.move_right(2*(left-right))
         myDrone.left_right_velocity = 10
@@ -257,6 +258,7 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
             if flag is True:
                 print("landing")
                 myDrone.land()
+                keepRecording = False
             else:
                 print("cant land")
     else:
@@ -265,7 +267,8 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
             if flag is True:
                 print("landing")
                 myDrone.land()
+                keepRecording = False
             else:
                 print("cant land")
 
-    return error
+    return error, keepRecording
