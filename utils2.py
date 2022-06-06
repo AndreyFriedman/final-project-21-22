@@ -225,9 +225,12 @@ def findMarker(img, givenId: int, type: str):  # id example: "DICT_ARUCO_ORIGINA
     return frame, centers, cordinates, areas
 
 
-def trackMarker(myDrone, x, y, area, w, h, pError):
+def trackMarker(currentID, myDrone, x, y, area, w, h, pError):
     print("-----new loop-----")
     flag = True
+
+    if currentID == priorityID:
+        flag = False
     # #inside func
     # def change_flag_true() -> bool:
     #     if flag == false:
@@ -338,113 +341,3 @@ def trackMarker(myDrone, x, y, area, w, h, pError):
             print("cant land")
     return error
 
-
-
-
-# def trackMarker(myDrone, x, y, area, w, h, pError):
-#     print("-----new loop-----")
-#     # print("area is:", area)
-#     flag = True
-#     # keepRecording = True
-#
-#     error = x - w // 2
-#     speed = pid[0] * error + pid[1] * (error - pError)
-#     speed = int(np.clip(speed, -100, 100))
-#
-#     # forward and backward
-#     if fbRange[0] < area < fbRange[1]:
-#         myDrone.for_back_velocity = 0
-#         # print(area)
-#     elif area > fbRange[1]:
-#         # dynamic_spd = -1 * int(((area - fbRange[1]) / (10000-fbRange[1])) * 100)
-#         dynamic_spd = -1 * int(math.pow((area - fbRange[1]) / (10000-fbRange[1]), 2))
-#         # print("need to go back, area is:", area)
-#         # print("dynamic speed is:", dynamic_spd)
-#         if dynamic_spd < -40:
-#             dynamic_spd = -40
-#         elif dynamic_spd > -20:
-#             dynamic_spd = -20
-#         myDrone.for_back_velocity = dynamic_spd
-#         flag = False
-#         # print("flag changed in line 187")
-#     elif area < fbRange[0] and area != 0:
-#         # dynamic_spd = int(math.pow((fbRange[0]- area)/(fbRange[0]/10), 2))
-#         dynamic_spd = int(math.pow((fbRange[0] - area)/(fbRange[0]/6.3095), 2.5))
-#         if dynamic_spd > 100:
-#             dynamic_spd = 100
-#         myDrone.for_back_velocity = dynamic_spd
-#         flag = False
-#         # print("flag changed in line 191")
-#     else:
-#         myDrone.for_back_velocity = 0
-#
-#     # up and down
-#     if h // 2 - 10 < y < h // 2 + 10:
-#         myDrone.up_down_velocity = 0
-#     elif y > h // 2 + 10:
-#         myDrone.up_down_velocity = -20
-#         flag = False
-#         # print("flag changed in line 203")
-#     elif y < h // 2 - 10 and y != 0:
-#         myDrone.up_down_velocity = 20
-#         flag = False
-#         # print("flag changed in line 207")
-#     else:
-#         myDrone.up_down_velocity = 0
-#         # flag = change_flag_true()
-#
-#     # right left curved
-#     if left - right > 4:  # TODO needs to change it to left right curved (just like edge_dist)
-#         # print("need to move right")
-#         # myDrone.move_right(2*(left-right))
-#         myDrone.left_right_velocity = 10
-#         flag = False
-#         # print("flag changed in line 216")
-#     elif right - left > 4:
-#         # print("need to move left")
-#         # myDrone.move_left(2 * (left - right))
-#         myDrone.left_right_velocity = -10
-#         flag = False
-#         # print("flag changed in line 222")
-#     else:
-#         myDrone.left_right_velocity = 0
-#
-#     # spin
-#     if x != 0:
-#         myDrone.yaw_velocity = speed
-#         # flag = False
-#         # print("flag changed in line 233")
-#     else:
-#         myDrone.yaw_velocity = 0
-#
-#         if myDrone.send_rc_control:
-#             myDrone.send_rc_control(myDrone.left_right_velocity,
-#                                     myDrone.for_back_velocity,
-#                                     myDrone.up_down_velocity,
-#                                     myDrone.yaw_velocity)
-#
-#     if fbRange[0] < area < ((fbRange[1] - fbRange[0])/2) + fbRange[0]:
-#         if down - up > edge_dist[0]:
-#             print("need to land")
-#             if flag is True:
-#                 print("landing")
-#                 myDrone.land()
-#                 with open('logging.txt', 'a') as f:
-#                     f.write("Landing")
-#                 # keepRecording = False
-#             else:
-#                 print("cant land")
-#     elif fbRange[0] < area < fbRange[1] - ((fbRange[1] - fbRange[0])/2):
-#         if down - up > edge_dist[1]:
-#             print("need to land")
-#             if flag is True:
-#                 print("landing")
-#                 myDrone.land()
-#                 with open('logging.txt', 'a') as f:
-#                     f.write("Landing")
-#             # keepRecording = False
-#             else:
-#                 print("cant land")
-#
-#     # return error, keepRecording
-#     return error

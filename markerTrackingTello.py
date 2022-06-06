@@ -12,6 +12,7 @@ pErrorfb = 0
 pErrorh = 0
 startCounter = 0  # for no Flight 1   - for flight 0
 loop_counter = 0
+currentID = 33
 
 myDrone = initializeTello()
 print(myDrone.get_battery())
@@ -35,13 +36,13 @@ with open('logging.txt', 'w') as f:
         #     break
 
         # Step 2
-        img, centers, cordinates, areas = findMarker(img, 33, "DICT_ARUCO_ORIGINAL")
+        img, centers, cordinates, areas = findMarker(img, currentID, "DICT_ARUCO_ORIGINAL")
         if len(centers) > 0:
             # pError, keepRecording = trackMarker(myDrone, centers[0][0], centers[0][1], areas[0], w, h, pError)
-            pError = trackMarker(myDrone, centers[0][0], centers[0][1], areas[0], w, h, pError)
+            pError = trackMarker(currentID, myDrone, centers[0][0], centers[0][1], areas[0], w, h, pError)
         else:
             # pError, keepRecording = trackMarker(myDrone, 0, 0, 0, w, h, pError)
-            pError = trackMarker(myDrone, 0, 0, 0, w, h, pError)
+            pError = trackMarker(currentID, myDrone, 0, 0, 0, w, h, pError)
 
         # if drone land and we finished
         if not myDrone.is_flying:
