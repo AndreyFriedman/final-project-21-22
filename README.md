@@ -1,6 +1,6 @@
 # project-20-21
 
-about Tello EDU: https://www.ryzerobotics.com/tello-edu
+About Tello EDU: https://www.ryzerobotics.com/tello-edu
 
 Goals: 
 Our goal was to code an autonomous drone that can interact with a human or a QR code.
