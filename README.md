@@ -19,18 +19,23 @@ Our Classes:
  TelloFaceTracking:
  
  This class initialize the drone, starting it, getting the frame from the drones camera and going to "utils" class and tells it to folow after the face recognized in the frame
+ 
  utills:
  
  This class tells the drone how to follow after a face it recognize
+ 
  MarkerTrackingTello:
  
  This class initialize the drone, starting it, getting the frame from the drones camera and going to "utils" class and tells it to folow after the aruco-code recognized in the frame
+ 
  utills2:
  
  This class tells the drone how to follow after the aruco-code it recognize
+ 
  padLand:
  
  This class tells the drone to find a pad land and land on it
+ 
  swarm-box-mission:
  
  This class takes the ip of 2 tello drones connected to the same wifi and send thems commands
