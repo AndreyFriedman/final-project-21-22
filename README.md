@@ -16,6 +16,7 @@ We use the given coordinates to assume where the target is respectively to the d
 We used the Pocket Sender application to connect the wanted drones with our own router. Then we can communicate with each drone separately using his IP address which give us the ability to active and use several drones simultaneously.
  
 Our Classes:
+
  TelloFaceTracking:
  
  This class initialize the drone, starting it, getting the frame from the drones camera and going to "utils" class and tells it to folow after the face recognized in the frame
