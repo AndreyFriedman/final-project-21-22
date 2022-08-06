@@ -2,7 +2,8 @@
 
 about Tello EDU: https://www.ryzerobotics.com/tello-edu
 
-Goals: Our goal was to code an autonomous drone that can interact with a human or a QR code.
+Goals: 
+ Our goal was to code an autonomous drone that can interact with a human or a QR code.
 
  Autonomous drones is an up coming subject in our world and has been an important evolving topic. They have multiple uses, such as: delivery purpose, collect information, and even for photography.
 In our project we implemented the drones code which gave them the ability to operate as a drone swarms, follow a target and even change targets mid-flight in real time.
