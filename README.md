@@ -15,3 +15,17 @@ The main idea of our project was to code the drone to follow a target  (initiall
 We use the given coordinates to assume where the target is respectively to the drone in the real world. By that we update the drone yaw, pitch and roll velocities to follow the target using our own dynamic speed functions. In the end of the flight a log file is created with data and information about the drone during the flight.
 We used the Pocket Sender application to connect the wanted drones with our own router. Then we can communicate with each drone separately using his IP address which give us the ability to active and use several drones simultaneously.
  
+Our Classes:
+ TelloFaceTracking:
+ This class initialize the drone, starting it, getting the frame from the drones camera and going to "utils" class and tells it to folow after the face recognized in the frame
+ utills:
+ This class tells the drone how to follow after a face it recognize
+ MarkerTrackingTello:
+ This class initialize the drone, starting it, getting the frame from the drones camera and going to "utils" class and tells it to folow after the aruco-code recognized in the frame
+ utills2:
+ This class tells the drone how to follow after the aruco-code it recognize
+ padLand:
+ This class tells the drone to find a pad land and land on it
+ swarm-box-mission:
+ This class takes the ip of 2 tello drones connected to the same wifi and send thems commands
+ 
