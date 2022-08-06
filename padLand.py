@@ -62,11 +62,14 @@ if __name__ == '__main__':
         # print("get mission pad z distance:", dist_z)
 
         myDrone.move_forward(25)
-        myDrone.move_right(25)
+        myDrone.move_left(25)
 
         print("battery is: " + str(myDrone.get_battery()))
+        x = myDrone.get_height()
+        print(x)
+        myDrone.move_down(x)
+        print(myDrone.get_height())
         myDrone.land()
-
     else:
         print("didnt recognized any of the mission pad. abort mission")
         myDrone.land()
