@@ -2,6 +2,8 @@
 
 About Tello EDU: https://www.ryzerobotics.com/tello-edu
 
+Code for the second part of the project, where the drone recognize hand gesture: https://github.com/Matan-Hodadov/tello-hand-gesture/
+
 Goals: 
 Our goal was to code an autonomous drone that can interact with a human or a QR code.
 
